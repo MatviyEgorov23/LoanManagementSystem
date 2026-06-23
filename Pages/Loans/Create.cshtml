@@ -1,0 +1,49 @@
+﻿@page
+@model LoanManagementSystem.Pages.Loans.CreateModel
+@{
+    ViewData["Title"] = "Issue New Loan";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark py-3">
+                <h5 class="mb-0"><i class="fas fa-hand-holding-usd me-2"></i>Issue New Loan</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Select Legal Entity</label>
+                        <select asp-for="NewLoan.ClientId" asp-items="Model.ClientOptions" class="form-select" required>
+                            <option value="">-- Choose a Client --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Loan Amount ($)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input asp-for="NewLoan.Amount" type="number" step="0.01" class="form-control" placeholder="0.00" required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Interest Rate (%)</label>
+                            <input asp-for="NewLoan.InterestRate" type="number" step="0.1" class="form-control" placeholder="5.5" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Duration (Months)</label>
+                            <input asp-for="NewLoan.DurationMonths" type="number" class="form-control" placeholder="12" required />
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning fw-bold">Create Credit Account</button>
+                        <a asp-page="/Loans/Index" class="btn btn-outline-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

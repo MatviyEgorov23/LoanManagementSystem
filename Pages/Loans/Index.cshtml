@@ -1,0 +1,100 @@
+﻿@page
+@model LoanManagementSystem.Pages.Loans.IndexModel
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Credit Accounts";
+    var currentRole = HttpContext.Session.GetString("DemoRole") ?? "Guest";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Loans Management</h2>
+    @* ДОДАВАННЯ: Тільки для Admin та Manager *@
+    @if (currentRole == "Admin" || currentRole == "Manager")
+    {
+        <a asp-page="/Loans/Create" class="btn btn-warning">
+            <i class="fas fa-plus"></i> Add New Credit
+        </a>
+    }
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Entity Name</th>
+                    <th>Amount</th>
+                    <th>Rate</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loan in Model.LoansList)
+                {
+                    <tr>
+                        <td>#@loan.Id</td>
+                        <td><strong>@loan.ClientName</strong></td>
+                        <td>@loan.Amount.ToString("N2") $</td>
+                        <td>@loan.InterestRate%</td>
+                        <td>@loan.DurationMonths mon.</td>
+                        <td>
+                            @* ЗМІНА СТАТУСУ: Тільки для Admin *@
+                            @if (currentRole == "Admin")
+                            {
+                                <form method="post" asp-page-handler="UpdateStatus" style="display:inline;">
+                                    <input type="hidden" name="id" value="@loan.Id" />
+                                    <input type="hidden" name="currentStatus" value="@loan.Status" />
+                                    <button type="submit" class="border-0 bg-transparent p-0">
+                                        <span class="badge @(loan.Status == "Active" ? "bg-success" : loan.Status == "Overdue" ? "bg-danger" : "bg-secondary")" style="cursor: pointer;">
+                                            @loan.Status <i class="fas fa-sync-alt ms-1 small"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                @* Для Manager та Guest просто текст без можливості кліку *@
+                                <span class="badge @(loan.Status == "Active" ? "bg-success" : loan.Status == "Overdue" ? "bg-danger" : "bg-secondary")">
+                                    @loan.Status
+                                </span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            @if (loan.Status != "Closed")
+                            {
+                                @if (currentRole == "Guest")
+                                {
+                                    <a asp-page="/Transactions/Create" asp-route-loanId="@loan.Id" class="btn btn-sm btn-success">
+                                        <i class="fas fa-money-bill-wave"></i> Pay
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                @if (currentRole == "Guest")
+                                {
+                                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                                        <i class="fas fa-check-circle"></i> Paid
+                                    </button>
+                                }
+                            }
+                            @* ВИДАЛЕННЯ: Тільки для Admin *@
+                            @if (currentRole == "Admin")
+                            {
+                                <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Delete this loan account?');" style="display:inline;">
+                                    <input type="hidden" name="id" value="@loan.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@page "{id:int}"
+@model LoanManagementSystem.Pages.Corporate.DetailsModel
+@{
+    ViewData["Title"] = "Company Profile";
+}
+
+<div class="container">
+    <div class="card shadow border-0">
+        <div class="card-header bg-dark text-white d-flex justify-content-between">
+            <h4 class="mb-0">@Model.Company.CompanyName</h4>
+            <span class="badge bg-warning text-dark">@Model.Company.Status</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 border-end">
+                    <h5 class="text-muted border-bottom pb-2">Contacts</h5>
+                    <p><strong>CEO:</strong> @Model.Company.CEO_Name</p>
+                    <p><strong>City:</strong> @Model.Company.City</p>
+                    <p><strong>Email:</strong> @Model.Company.Email</p>
+                    <p><strong>Phone:</strong> @Model.Company.ContactPhone</p>
+                </div>
+                <div class="col-md-4 border-end">
+                    <h5 class="text-muted border-bottom pb-2">Financials</h5>
+                    <p><strong>Annual Turnover:</strong> @Model.Company.AnnualTurnover.ToString("C")</p>
+                    <p><strong>Net Profit:</strong> @Model.Company.NetProfit.ToString("C")</p>
+                    <p><strong>Assets:</strong> @Model.Company.AssetsValue.ToString("C")</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-muted border-bottom pb-2">Loan Request</h5>
+                    <p><strong>Range:</strong> @Model.Company.RequestedAmountMin.ToString("N0") - @Model.Company.RequestedAmountMax.ToString("N0") $</p>
+                    <p><strong>Rate:</strong> @Model.Company.ProposedInterestRate%</p>
+                </div>
+            </div>
+            <hr />
+            <h5>Financial Report Summary</h5>
+            <div class="p-3 bg-light rounded">
+                @Model.Company.FinancialReportSummary
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-page="/Corporate/Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

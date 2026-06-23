@@ -1,0 +1,42 @@
+﻿@page
+@model LoanManagementSystem.Pages.Reports.AnalyticsModel
+@{
+    ViewData["Title"] = "Analytical report";
+}
+
+<h2 class="mb-4">Analytical report of the LoanManagementSystem</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body">
+                <h6>Active Loans</h6>
+                <h3>@Model.Stats.TotalActiveLoans</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body">
+                <h6>Total amount</h6>
+                <h3>@Model.Stats.TotalLoanedAmount.ToString("N2") $</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white shadow">
+            <div class="card-body">
+                <h6>Average rate</h6>
+                <h3>@Model.Stats.AverageRate.ToString("F2") %</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body">
+                <h6>Overdue</h6>
+                <h3>@Model.Stats.OverdueCount</h3>
+            </div>
+        </div>
+    </div>
+</div>
